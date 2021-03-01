@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,15 +30,33 @@ public class BookService {
 
         if (Filter.author != "" || Filter.title != "" || Filter.size != null) {
             if (Filter.author  != "") {
-                filterBooks = filterBooks.stream().filter(b -> b.getAuthor().matches(Filter.author )).collect(Collectors.toList());
+                filterBooks = filterBooks.stream()
+                                         .filter(b -> {
+                                             Pattern pattern = Pattern.compile(Filter.author);
+                                             Matcher match = pattern.matcher(b.getAuthor());
+                                             return match.lookingAt();
+                                         })
+                                         .collect(Collectors.toList());
             }
 
             if (Filter.title != "") {
-                filterBooks = filterBooks.stream().filter(b -> b.getTitle().matches(Filter.title)).collect(Collectors.toList());
+                filterBooks = filterBooks.stream()
+                                         .filter(b ->  {
+                                             Pattern pattern = Pattern.compile(Filter.title);
+                                             Matcher match = pattern.matcher(b.getTitle());
+                                             return match.lookingAt();
+                                         })
+                                         .collect(Collectors.toList());
             }
 
             if (Filter.size != null) {
-                filterBooks = filterBooks.stream().filter(b -> b.getSize().equals(Filter.size)).collect(Collectors.toList());
+                filterBooks = filterBooks.stream()
+                                         .filter(b ->  {
+                                             Pattern pattern = Pattern.compile(Filter.size.toString());
+                                             Matcher match = pattern.matcher(b.getSize().toString());
+                                             return match.lookingAt();
+                                         })
+                                         .collect(Collectors.toList());
             }
         }
         return filterBooks;
@@ -53,19 +73,43 @@ public class BookService {
 
         if (bookIdToRemove != null || bookAuthorToRemove != "" || bookTitleToRemove != "" || bookSizeToRemove != null) {
             if (bookIdToRemove != null) {
-                removeBooks = removeBooks.stream().filter(b -> b.getId().equals(bookIdToRemove)).collect(Collectors.toList());
+                removeBooks = removeBooks.stream()
+                                         .filter(b -> {
+                                             Pattern pattern = Pattern.compile(bookIdToRemove.toString());
+                                             Matcher match = pattern.matcher(b.getSize().toString());
+                                             return match.lookingAt();
+                                         })
+                                         .collect(Collectors.toList());
             }
 
             if (bookAuthorToRemove != "") {
-                removeBooks = removeBooks.stream().filter(b -> b.getAuthor().matches(bookAuthorToRemove)).collect(Collectors.toList());
+                removeBooks = removeBooks.stream()
+                                         .filter(b -> {
+                                             Pattern pattern = Pattern.compile(bookAuthorToRemove);
+                                             Matcher match = pattern.matcher(b.getAuthor());
+                                             return match.lookingAt();
+                                         })
+                                         .collect(Collectors.toList());
             }
 
             if (bookTitleToRemove != "") {
-                removeBooks = removeBooks.stream().filter(b -> b.getTitle().matches(bookTitleToRemove)).collect(Collectors.toList());
+                removeBooks = removeBooks.stream()
+                                         .filter(b -> {
+                                             Pattern pattern = Pattern.compile(bookTitleToRemove);
+                                             Matcher match = pattern.matcher(b.getTitle());
+                                             return match.lookingAt();
+                                         })
+                                         .collect(Collectors.toList());
             }
 
             if (bookSizeToRemove != null) {
-                removeBooks = removeBooks.stream().filter(b -> b.getSize().equals(bookSizeToRemove)).collect(Collectors.toList());
+                removeBooks = removeBooks.stream()
+                                         .filter(b -> {
+                                             Pattern pattern = Pattern.compile(bookSizeToRemove.toString());
+                                             Matcher match = pattern.matcher(b.getSize().toString());
+                                             return match.lookingAt();
+                                         })
+                                         .collect(Collectors.toList());
             }
 
             for (Book book : removeBooks) {
