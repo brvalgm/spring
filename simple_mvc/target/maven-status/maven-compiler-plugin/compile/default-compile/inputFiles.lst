@@ -4,6 +4,7 @@ D:\Training\java\spring\simple_mvc\src\main\java\org\example\app\services\BookRe
 D:\Training\java\spring\simple_mvc\src\main\java\org\example\app\services\UserRepository.java
 D:\Training\java\spring\simple_mvc\src\main\java\org\example\app\services\UserService.java
 D:\Training\java\spring\simple_mvc\src\main\java\org\example\web\controllers\LoginController.java
+D:\Training\java\spring\simple_mvc\src\main\java\org\example\web\dto\Filter.java
 D:\Training\java\spring\simple_mvc\src\main\java\org\example\web\dto\User.java
 D:\Training\java\spring\simple_mvc\src\main\java\org\example\app\services\BookService.java
 D:\Training\java\spring\simple_mvc\src\main\java\org\example\web\dto\Book.java

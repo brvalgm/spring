@@ -1,6 +1,7 @@
 package org.example.app.services;
 
 import org.example.web.dto.Book;
+import org.example.web.dto.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,10 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final ProjectRepository<Book> bookRepo;
-    private List<Book> bookList;
 
     @Autowired
     public BookService(@Qualifier("bookRepository") ProjectRepository<Book> bookRepo) {
         this.bookRepo = bookRepo;
-        this.bookList = bookRepo.retrieveAll();
     }
 
     public List<Book> getAllBooks() {
@@ -25,11 +24,22 @@ public class BookService {
     }
 
     public List<Book> getBookList() {
-        return bookList;
-    }
+        List<Book> filterBooks = getAllBooks();
 
-    public void setBookList(List<Book> bookList) {
-        this.bookList = bookList;
+        if (Filter.author != "" || Filter.title != "" || Filter.size != null) {
+            if (Filter.author  != "") {
+                filterBooks = filterBooks.stream().filter(b -> b.getAuthor().matches(Filter.author )).collect(Collectors.toList());
+            }
+
+            if (Filter.title != "") {
+                filterBooks = filterBooks.stream().filter(b -> b.getTitle().matches(Filter.title)).collect(Collectors.toList());
+            }
+
+            if (Filter.size != null) {
+                filterBooks = filterBooks.stream().filter(b -> b.getSize().equals(Filter.size)).collect(Collectors.toList());
+            }
+        }
+        return filterBooks;
     }
 
     public void saveBook(Book book) {
@@ -39,7 +49,7 @@ public class BookService {
     }
 
     public void removeBook(Integer bookIdToRemove, String bookAuthorToRemove, String bookTitleToRemove, Integer bookSizeToRemove) {
-        List<Book> removeBooks = getAllBooks();
+        List<Book> removeBooks = getBookList();
 
         if (bookIdToRemove != null || bookAuthorToRemove != "" || bookTitleToRemove != "" || bookSizeToRemove != null) {
             if (bookIdToRemove != null) {
@@ -64,22 +74,9 @@ public class BookService {
         }
     }
 
-    public List<Book> searchBook(String bookAuthorToSearch, String bookTitleToSearch, Integer bookSizeToSearch) {
-        List<Book> searchBooks = getAllBooks();
-
-        if (bookAuthorToSearch != "" || bookTitleToSearch != "" || bookSizeToSearch != null) {
-            if (bookAuthorToSearch != "") {
-                searchBooks = searchBooks.stream().filter(b -> b.getAuthor().matches(bookAuthorToSearch)).collect(Collectors.toList());
-            }
-
-            if (bookTitleToSearch != "") {
-                searchBooks = searchBooks.stream().filter(b -> b.getTitle().matches(bookTitleToSearch)).collect(Collectors.toList());
-            }
-
-            if (bookSizeToSearch != null) {
-                searchBooks = searchBooks.stream().filter(b -> b.getSize().equals(bookSizeToSearch)).collect(Collectors.toList());
-            }
-        }
-        return searchBooks;
+    public void searchBook(String bookAuthorToSearch, String bookTitleToSearch, Integer bookSizeToSearch) {
+        Filter.author = bookAuthorToSearch;
+        Filter.title = bookTitleToSearch;
+        Filter.size = bookSizeToSearch;
     }
 }

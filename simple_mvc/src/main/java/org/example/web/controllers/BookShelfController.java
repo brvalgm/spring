@@ -34,7 +34,6 @@ public class BookShelfController {
     @PostMapping(value = "/save")
     public String saveBook(Book book) {
         bookService.saveBook(book);
-        bookService.setBookList(bookService.getAllBooks());
         logger.info("current repository contents: " + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
@@ -46,7 +45,6 @@ public class BookShelfController {
             @RequestParam(value = "bookTitleToRemove") String bookTitleToRemove,
             @RequestParam(value = "bookSizeToRemove") Integer bookSizeToRemove){
         bookService.removeBook(bookIdToRemove, bookAuthorToRemove, bookTitleToRemove, bookSizeToRemove);
-        bookService.setBookList(bookService.getAllBooks());
         return "redirect:/books/shelf";
     }
 
@@ -55,7 +53,7 @@ public class BookShelfController {
             @RequestParam(value = "bookAuthorToSearch") String bookAuthorToSearch,
             @RequestParam(value = "bookTitleToSearch") String bookTitleToSearch,
             @RequestParam(value = "bookSizeToSearch") Integer bookSizeToSearch){
-        bookService.setBookList(bookService.searchBook(bookAuthorToSearch, bookTitleToSearch, bookSizeToSearch));
+        bookService.searchBook(bookAuthorToSearch, bookTitleToSearch, bookSizeToSearch);
         return "redirect:/books/shelf";
     }
 
