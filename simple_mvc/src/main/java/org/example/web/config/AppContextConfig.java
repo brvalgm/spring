@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Scope;
 public class AppContextConfig {
     @Bean
     @Scope("prototype")
-
     public IdProvider idProvider() {
         IdProvider idProvider = new IdProvider();
         return idProvider;
