@@ -24,7 +24,7 @@ public class UserRepository implements ProjectRepository<User> {
     }
 
     @Override
-    public void removeItemById(Integer userIdToRemove) {
+    public void removeItemById(String userIdToRemove) {
         for (User user : retrieveAll()) {
             if (user.getId().equals(userIdToRemove)) {
                 logger.info("remove user completed: " + user);

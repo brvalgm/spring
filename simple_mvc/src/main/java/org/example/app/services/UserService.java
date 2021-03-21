@@ -32,7 +32,7 @@ public class UserService {
         }
     }
 
-    public void removeUserById(Integer userIdToRemove) {
+    public void removeUserById(String userIdToRemove) {
         userRepo.removeItemById(userIdToRemove);
     }
 

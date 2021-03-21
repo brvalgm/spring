@@ -1,5 +1,6 @@
 package org.example.app.services;
 
+import org.apache.log4j.Logger;
 import org.example.web.dto.Book;
 import org.example.web.dto.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final ProjectRepository<Book> bookRepo;
+    private final Logger logger = Logger.getLogger(BookService.class);
 
     @Autowired
     public BookService(@Qualifier("bookRepository") ProjectRepository<Book> bookRepo) {
@@ -68,15 +70,15 @@ public class BookService {
         }
     }
 
-    public void removeBook(Integer bookIdToRemove, String bookAuthorToRemove, String bookTitleToRemove, Integer bookSizeToRemove) {
+    public void removeBook(String bookIdToRemove, String bookAuthorToRemove, String bookTitleToRemove, Integer bookSizeToRemove) {
         List<Book> removeBooks = getBookList();
 
-        if (bookIdToRemove != null || bookAuthorToRemove != "" || bookTitleToRemove != "" || bookSizeToRemove != null) {
-            if (bookIdToRemove != null) {
+        if (bookIdToRemove != "" || bookAuthorToRemove != "" || bookTitleToRemove != "" || bookSizeToRemove != null) {
+            if (bookIdToRemove != "") {
                 removeBooks = removeBooks.stream()
                                          .filter(b -> {
-                                             Pattern pattern = Pattern.compile(bookIdToRemove.toString());
-                                             Matcher match = pattern.matcher(b.getSize().toString());
+                                             Pattern pattern = Pattern.compile(bookIdToRemove);
+                                             Matcher match = pattern.matcher(b.getId());
                                              return match.lookingAt();
                                          })
                                          .collect(Collectors.toList());
@@ -122,5 +124,13 @@ public class BookService {
         Filter.author = bookAuthorToSearch;
         Filter.title = bookTitleToSearch;
         Filter.size = bookSizeToSearch;
+    }
+
+    private void defaultInit() {
+        logger.info("default INIT in book service");
+    }
+
+    private void defaultDestroy() {
+        logger.info("default INIT in book service");
     }
 }

@@ -25,7 +25,7 @@ public class BookShelfController {
 
     @GetMapping(value = "/shelf")
     public String books(Model model) {
-        logger.info("got book shelf");
+        logger.info(this.toString());
         model.addAttribute("book", new Book());
         model.addAttribute("bookList", bookService.getBookList());
         return "book_shelf";
@@ -40,7 +40,7 @@ public class BookShelfController {
 
     @PostMapping(value = "/remove")
     public String removeBook(
-            @RequestParam(value = "bookIdToRemove") Integer bookIdToRemove,
+            @RequestParam(value = "bookIdToRemove") String bookIdToRemove,
             @RequestParam(value = "bookAuthorToRemove") String bookAuthorToRemove,
             @RequestParam(value = "bookTitleToRemove") String bookTitleToRemove,
             @RequestParam(value = "bookSizeToRemove") Integer bookSizeToRemove){
